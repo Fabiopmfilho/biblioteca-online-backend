@@ -21,6 +21,47 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+📘 Model: Book (Livro)
+prisma
+Copiar
+Editar
+model Book {
+id String @id @default(uuid()) // ID único do livro
+title String // Título do livro
+author String // Autor
+description String // Descrição ou sinopse
+imageUrl String? // (Opcional) URL da capa
+category String? // (Opcional) Categoria (ex: Ficção, História, etc)
+totalCopies Int // Total de cópias cadastradas
+borrowed Int @default(0) // Quantas cópias estão emprestadas no momento
+loans Loan[] // Relação: um livro pode ter vários empréstimos
+createdAt DateTime @default(now()) // Data de criação do registro
+updatedAt DateTime @updatedAt // Atualiza automaticamente na edição
+}
+Sobre o campo borrowed
+Representa quantos exemplares estão emprestados no momento.
+
+Serve para calcular rapidamente quantidade disponível = totalCopies - borrowed.
+
+📗 Model: Loan (Empréstimo)
+prisma
+Copiar
+Editar
+model Loan {
+id String @id @default(uuid()) // ID único do empréstimo
+book Book @relation(fields: [bookId], references: [id]) // Relação com o livro
+bookId String  
+ borrower String // Nome do aluno/quem pegou o livro
+loanDate DateTime @default(now()) // Quando foi emprestado
+dueDate DateTime // Prazo de devolução
+returned Boolean @default(false) // Se já foi devolvido
+returnDate DateTime? // Quando foi devolvido (se já foi)
+}
+🔁 Relacionamento entre os dois
+Um livro (Book) pode ter vários empréstimos (Loan[])
+
+Cada empréstimo pertence a um livro.
+
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
