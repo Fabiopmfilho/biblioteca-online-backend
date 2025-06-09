@@ -18,7 +18,9 @@ export class AuthService {
     const adminPassword = this.config.get('ADMIN_PASSWORD');
 
     if (email === adminEmail && password === adminPassword) {
-      return { email };
+      const payload = { email, sub: 1 };
+      const token = this.jwtService.sign(payload);
+      return { access_token: token };
     }
 
     throw new UnauthorizedException('Credenciais inválidas');

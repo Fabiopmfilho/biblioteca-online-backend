@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Book {
-  id          String   @id @default(uuid())
+  id          Int      @id @default(autoincrement())
   title       String
   author      String
   description String?
@@ -29,8 +29,8 @@ model Book {
 
 model Loan {
   id         String    @id @default(uuid())
+  bookId     Int
   book       Book      @relation(fields: [bookId], references: [id])
-  bookId     String
   borrower   String
   loanDate   DateTime  @default(now())
   dueDate    DateTime
